@@ -38,6 +38,7 @@ export class AuthService {
       password: hashedPassword,
     };
     const user = await this.usersService.create(payload);
+
     return user;
   }
 
@@ -59,6 +60,7 @@ export class AuthService {
       authToken: token,
       refreshToken,
     };
+
     return user;
   }
 
@@ -69,6 +71,7 @@ export class AuthService {
     delete payload.iat;
     payload.type = Token.AT;
     const authToken = this.tokenService.sign(payload);
+
     return authToken;
   }
 
@@ -104,6 +107,7 @@ export class AuthService {
       password: hashedPassword,
     };
     await this.usersService.update(payload);
+
     return true;
   }
 }

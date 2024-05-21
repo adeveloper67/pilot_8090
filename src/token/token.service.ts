@@ -21,6 +21,7 @@ export class TokenService {
       type,
       role: user.role,
     };
+
     return payload;
   }
 
@@ -34,6 +35,7 @@ export class TokenService {
       secret: this.configService.get<string>('JWT_SECRET'),
       expiresIn: exp,
     });
+
     return token;
   }
 
@@ -41,11 +43,13 @@ export class TokenService {
     const payload = this.jwtService.verify(token, {
       secret: this.configService.get<string>('JWT_SECRET'),
     });
+
     return payload;
   }
 
   extractToken(request: Request): string | undefined {
     const [key, token] = request.headers.authorization?.split(' ') ?? [];
+
     return key === 'Bearer' ? token : undefined;
   }
 }
