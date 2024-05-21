@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "29308d64-2040-4c13-8326-99a8d1aa312e",
+		"name": "v-answering",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28872600"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "sign-up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test test\",\n    \"email\": \"test@gmail.com\",\n    \"password\": \"156354111\",\n    \"passwordConfirm\": \"156354111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/sign-up",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign-in",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@gmail.com\",\n    \"password\": \"156354111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/sign-in",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh-token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "refresh-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjRiNTYxZWExNTQxNDQxMmQzNTFkNGYiLCJ0eXBlIjoicmVmcmVzaC10b2tlbiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzE2Mjc1NjE0LCJleHAiOjE3MTY4ODA0MTR9.ZkpauqwR8LlncC4RZeAXjfXsjokCxEyhvkIx91ijFgc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/auth/refresh-token",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgot-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/forgot-password",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "password-reset/token",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"156354111\",\n    \"passwordConfirm\": \"156354111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/password-reset/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjRiNTYxZWExNTQxNDQxMmQzNTFkNGYiLCJ0eXBlIjoicGFzc3dvcmQtcmVzZXQtdG9rZW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MTYyODQzNDUsImV4cCI6MTcxNjI4Nzk0NX0.fhPUKoEhlVC8JZu6B3vNiQbzYtf_Mm_wBlhzIwD4fD4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"password-reset",
+								"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjRiNTYxZWExNTQxNDQxMmQzNTFkNGYiLCJ0eXBlIjoicGFzc3dvcmQtcmVzZXQtdG9rZW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MTYyODQzNDUsImV4cCI6MTcxNjI4Nzk0NX0.fhPUKoEhlVC8JZu6B3vNiQbzYtf_Mm_wBlhzIwD4fD4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": []
+		},
+		{
+			"name": "dashboard",
+			"item": []
+		}
+	]
+}
