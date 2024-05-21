@@ -1,14 +1,16 @@
 import {
   HttpException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import * as bcrypt from 'bcrypt';
 
 import { TokenService } from 'src/token/token.service';
 import { UsersService } from 'src/users/users.service';
-import { SignInDto, SignUpDto } from './dto';
+import { PasswordResetDto, SignInDto, SignUpDto } from './dto';
 import { User } from 'src/schemas';
 import { IUser } from './interfaces';
 import { Token } from 'src/enums';
@@ -16,6 +18,7 @@ import { Token } from 'src/enums';
 @Injectable()
 export class AuthService {
   constructor(
+    @Inject(REQUEST) private readonly request: Request,
     private readonly usersService: UsersService,
     private readonly tokenService: TokenService,
   ) {}
@@ -63,5 +66,21 @@ export class AuthService {
     payload.type = Token.AT;
     const authToken = this.tokenService.sign(payload);
     return authToken;
+  }
+
+  async passwordReset(dto: PasswordResetDto): Promise<boolean> {
+    const token = this.request.params.token;
+    const _payload = this.tokenService.verify(token);
+
+    if (dto.password !== dto.passwordConfirm)
+      throw new HttpException('The passwords must match', 403);
+
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const payload = {
+      userId: _payload.sub,
+      password: hashedPassword,
+    };
+    await this.usersService.update(payload);
+    return true;
   }
 }

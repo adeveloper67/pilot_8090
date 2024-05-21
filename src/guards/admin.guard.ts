@@ -19,7 +19,6 @@ export class AdminGuard implements CanActivate {
 
     const payload = this.tokenService.verify(token);
 
-    if (!payload) throw new UnauthorizedException();
     if (payload.role !== 'admin') throw new UnauthorizedException();
 
     return true;

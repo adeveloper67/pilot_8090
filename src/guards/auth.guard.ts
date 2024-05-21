@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
+import { Token } from 'src/enums';
 import { TokenService } from 'src/token/token.service';
 
 @Injectable()
@@ -19,7 +20,7 @@ export class AuthGuard implements CanActivate {
 
     const payload = this.tokenService.verify(token);
 
-    if (!payload) throw new UnauthorizedException();
+    if (payload.type !== Token.AT) throw new UnauthorizedException();
 
     return true;
   }

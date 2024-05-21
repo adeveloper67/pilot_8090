@@ -28,6 +28,7 @@ export class TokenService {
     let exp = '1d';
 
     if (payload.type === Token.RT) exp = '7d';
+    if (payload.type === Token.PRT) exp = '1h';
 
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get<string>('JWT_SECRET'),
