@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { SignInDto, SignUpDto } from './dto';
 import { User } from 'src/schemas';
 import { IUser } from './interfaces';
-import { RefreshTokenGuard } from 'src/guards/refresh-token.guard';
+import { RefreshTokenGuard } from 'src/guards';
 
 @Controller('auth')
 export class AuthController {

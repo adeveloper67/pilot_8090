@@ -8,7 +8,7 @@ import {
 import { TokenService } from 'src/token/token.service';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
   constructor(private readonly tokenService: TokenService) {}
 
   canActivate(context: ExecutionContext): boolean {
