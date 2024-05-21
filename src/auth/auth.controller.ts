@@ -21,6 +21,11 @@ export class AuthController {
     return this.authService.signIn(dto);
   }
 
+  @Post('forgot-password')
+  forgotPassword(@Body('email') email: string): Promise<boolean> {
+    return this.authService.forgotPassword(email);
+  }
+
   @UseGuards(RefreshTokenGuard)
   @Post('refresh-token')
   refreshToken(@Req() request: Request): string {

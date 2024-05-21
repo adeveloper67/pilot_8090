@@ -4,7 +4,9 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { REQUEST } from '@nestjs/core';
+import { MailerService } from '@nestjs-modules/mailer';
 import { Request } from 'express';
 import * as bcrypt from 'bcrypt';
 
@@ -19,6 +21,8 @@ import { Token } from 'src/enums';
 export class AuthService {
   constructor(
     @Inject(REQUEST) private readonly request: Request,
+    private readonly configService: ConfigService,
+    private readonly mailerService: MailerService,
     private readonly usersService: UsersService,
     private readonly tokenService: TokenService,
   ) {}
@@ -66,6 +70,25 @@ export class AuthService {
     payload.type = Token.AT;
     const authToken = this.tokenService.sign(payload);
     return authToken;
+  }
+
+  async forgotPassword(email: string): Promise<boolean> {
+    const user = await this.usersService.getByEmail(email);
+
+    if (!user) throw new HttpException('User not found', 404);
+
+    const payload = this.tokenService.generatePayload(user, Token.PRT);
+    const token = this.tokenService.sign(payload);
+    const url = `${this.configService.get<string>('BASE_URL')}/auth/password-reset/${token}`;
+
+    await this.mailerService.sendMail({
+      from: this.configService.get<string>('EMAIL_ADDRESS'),
+      to: user.email,
+      subject: 'Password Reset',
+      text: url,
+    });
+
+    return true;
   }
 
   async passwordReset(dto: PasswordResetDto): Promise<boolean> {
