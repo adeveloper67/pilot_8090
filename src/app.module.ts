@@ -6,6 +6,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { TokenModule } from './token/token.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { AuthModule } from './auth/auth.module';
     TokenModule,
     UsersModule,
     AuthModule,
+    AdminModule,
+    DashboardModule,
   ],
 })
 export class AppModule {}
