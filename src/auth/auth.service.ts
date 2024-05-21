@@ -13,7 +13,6 @@ import * as bcrypt from 'bcrypt';
 import { TokenService } from 'src/token/token.service';
 import { UsersService } from 'src/users/users.service';
 import { PasswordResetDto, SignInDto, SignUpDto } from './dto';
-import { User } from 'src/schemas';
 import { IUser } from './interfaces';
 import { Token } from 'src/enums';
 
@@ -27,17 +26,28 @@ export class AuthService {
     private readonly tokenService: TokenService,
   ) {}
 
-  async signUp(dto: SignUpDto): Promise<User> {
+  async signUp(dto: SignUpDto): Promise<IUser> {
     if (dto.password !== dto.passwordConfirm)
       throw new HttpException('The passwords must match', 403);
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
-    const payload = {
+    const _payload = {
       name: dto.name,
       email: dto.email,
       password: hashedPassword,
     };
-    const user = await this.usersService.create(payload);
+    const _user = await this.usersService.create(_payload);
+    const payload = this.tokenService.generatePayload(_user, Token.AT);
+    const token = this.tokenService.sign(payload);
+    payload.type = Token.RT;
+    const refreshToken = this.tokenService.sign(payload);
+    const user = {
+      name: _user.name,
+      email: _user.email,
+      role: _user.role,
+      authToken: token,
+      refreshToken,
+    };
 
     return user;
   }

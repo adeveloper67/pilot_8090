@@ -3,7 +3,6 @@ import { Request } from 'express';
 
 import { AuthService } from './auth.service';
 import { PasswordResetDto, SignInDto, SignUpDto } from './dto';
-import { User } from 'src/schemas';
 import { IUser } from './interfaces';
 import { PasswordResetGuard, RefreshTokenGuard } from 'src/guards';
 
@@ -12,7 +11,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('sign-up')
-  signUp(@Body() dto: SignUpDto): Promise<User> {
+  signUp(@Body() dto: SignUpDto): Promise<IUser> {
     return this.authService.signUp(dto);
   }
 
