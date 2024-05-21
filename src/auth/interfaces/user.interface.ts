@@ -3,4 +3,5 @@ export interface IUser {
   email: string;
   role: string;
   authToken: string;
+  refreshToken: string;
 }

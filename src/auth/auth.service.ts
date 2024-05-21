@@ -3,6 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Request } from 'express';
 import * as bcrypt from 'bcrypt';
 
 import { TokenService } from 'src/token/token.service';
@@ -10,6 +11,7 @@ import { UsersService } from 'src/users/users.service';
 import { SignInDto, SignUpDto } from './dto';
 import { User } from 'src/schemas';
 import { IUser } from './interfaces';
+import { Token } from 'src/enums';
 
 @Injectable()
 export class AuthService {
@@ -39,14 +41,27 @@ export class AuthService {
     if (!(await bcrypt.compare(dto.password, _user.password)))
       throw new UnauthorizedException();
 
-    const payload = this.tokenService.generatePayload(_user);
+    const payload = this.tokenService.generatePayload(_user, Token.AT);
     const token = this.tokenService.sign(payload);
+    payload.type = Token.RT;
+    const refreshToken = this.tokenService.sign(payload);
     const user = {
       name: _user.name,
       email: _user.email,
       role: _user.role,
       authToken: token,
+      refreshToken,
     };
     return user;
+  }
+
+  refreshToken(request: Request): string {
+    const token = request.header('refresh-token');
+    const payload = this.tokenService.verify(token);
+    delete payload.exp;
+    delete payload.iat;
+    payload.type = Token.AT;
+    const authToken = this.tokenService.sign(payload);
+    return authToken;
   }
 }

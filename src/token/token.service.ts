@@ -6,6 +6,7 @@ import { Request } from 'express';
 
 import { User } from 'src/schemas';
 import { IPayload } from './interfaces';
+import { Token } from 'src/enums';
 
 @Injectable()
 export class TokenService {
@@ -14,18 +15,23 @@ export class TokenService {
     private readonly jwtService: JwtService,
   ) {}
 
-  generatePayload(user: User): IPayload {
+  generatePayload(user: User, type: string): IPayload {
     const payload = {
       sub: user._id as Types.ObjectId,
-      email: user.email,
+      type,
       role: user.role,
     };
     return payload;
   }
 
   sign(payload: IPayload): string {
+    let exp = '1d';
+
+    if (payload.type === Token.RT) exp = '7d';
+
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get<string>('JWT_SECRET'),
+      expiresIn: exp,
     });
     return token;
   }
