@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { PublicModule } from './public/public.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     AuthModule,
     AdminModule,
     DashboardModule,
+    PublicModule,
   ],
 })
 export class AppModule {}
