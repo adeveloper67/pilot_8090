@@ -1,4 +1,13 @@
-import { Body, Controller, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { Request } from 'express';
 
 import { AuthService } from './auth.service';
@@ -15,16 +24,19 @@ export class AuthController {
     return this.authService.signUp(dto);
   }
 
+  @HttpCode(HttpStatus.OK)
   @Post('sign-in')
   signIn(@Body() dto: SignInDto): Promise<IUser> {
     return this.authService.signIn(dto);
   }
 
+  @HttpCode(HttpStatus.OK)
   @Post('forgot-password')
   forgotPassword(@Body('email') email: string): Promise<boolean> {
     return this.authService.forgotPassword(email);
   }
 
+  @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshTokenGuard)
   @Post('refresh-token')
   refreshToken(@Req() request: Request): string {
