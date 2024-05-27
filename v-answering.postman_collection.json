@@ -64,6 +64,24 @@
 					"response": []
 				},
 				{
+					"name": "google",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/auth/google",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"google"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "refresh-token",
 					"request": {
 						"method": "POST",
