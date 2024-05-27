@@ -28,7 +28,7 @@ export class AuthService {
 
   async googleLogin(req: Request) {
     if (!req.user) {
-      return 'No user from google';
+      throw new HttpException('User not found', 404);
     }
 
     const _user = req.user as IGUser;
