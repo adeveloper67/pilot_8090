@@ -14,8 +14,11 @@ import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { PasswordResetDto, SignInDto, SignUpDto } from './dto';
 import { IUser } from './interfaces';
-import { PasswordResetGuard, RefreshTokenGuard } from 'src/guards';
-import { GoogleOAuthGuard } from 'src/guards/google.guard';
+import {
+  PasswordResetGuard,
+  RefreshTokenGuard,
+  GoogleOAuthGuard,
+} from 'src/guards';
 
 @Controller('auth')
 export class AuthController {
