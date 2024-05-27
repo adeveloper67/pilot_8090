@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Patch,
@@ -14,10 +15,21 @@ import { AuthService } from './auth.service';
 import { PasswordResetDto, SignInDto, SignUpDto } from './dto';
 import { IUser } from './interfaces';
 import { PasswordResetGuard, RefreshTokenGuard } from 'src/guards';
+import { GoogleOAuthGuard } from 'src/guards/google.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @UseGuards(GoogleOAuthGuard)
+  @Get('google')
+  async googleAuth() {}
+
+  @UseGuards(GoogleOAuthGuard)
+  @Get('google/callback')
+  googleAuthRedirect(@Req() req: Request) {
+    return this.authService.googleLogin(req);
+  }
 
   @Post('sign-up')
   signUp(@Body() dto: SignUpDto): Promise<IUser> {

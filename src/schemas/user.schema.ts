@@ -20,7 +20,7 @@ export class User extends Document {
 
   @Prop({
     type: String,
-    required: true,
+    default: null,
   })
   password: string;
 

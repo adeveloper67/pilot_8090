@@ -13,7 +13,7 @@ import * as bcrypt from 'bcrypt';
 import { TokenService } from 'src/token/token.service';
 import { UsersService } from 'src/users/users.service';
 import { PasswordResetDto, SignInDto, SignUpDto } from './dto';
-import { IUser } from './interfaces';
+import { IGUser, IUser } from './interfaces';
 import { Token } from 'src/enums';
 
 @Injectable()
@@ -25,6 +25,39 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly tokenService: TokenService,
   ) {}
+
+  async googleLogin(req: Request) {
+    if (!req.user) {
+      return 'No user from google';
+    }
+
+    const _user = req.user as IGUser;
+    let __user = await this.usersService.getByEmail(_user.email);
+
+    if (!__user) {
+      const payload = {
+        name: `${_user.firstName} ${_user.lastName}`,
+        email: _user.email,
+      };
+
+      __user = await this.usersService.create(payload);
+    }
+
+    const payload = this.tokenService.generatePayload(__user, Token.AT);
+    const token = this.tokenService.sign(payload);
+    payload.type = Token.RT;
+    const refreshToken = this.tokenService.sign(payload);
+
+    const user = {
+      name: __user.name,
+      email: __user.email,
+      role: __user.role,
+      authToken: token,
+      refreshToken,
+    };
+
+    return user;
+  }
 
   async signUp(dto: SignUpDto): Promise<IUser> {
     if (dto.password !== dto.passwordConfirm)
@@ -53,6 +86,7 @@ export class AuthService {
   }
 
   async signIn(dto: SignInDto): Promise<IUser> {
+    console.log(this.configService.get<string>('GOOGLE_REDIRECT_URI'));
     const _user = await this.usersService.getByEmail(dto.email);
 
     if (!_user) throw new HttpException('User not found', 404);
