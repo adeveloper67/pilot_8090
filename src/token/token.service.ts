@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { UnauthorizedException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Types } from 'mongoose';
@@ -40,11 +40,15 @@ export class TokenService {
   }
 
   verify(token: string): IPayload {
-    const payload = this.jwtService.verify(token, {
-      secret: this.configService.get<string>('JWT_SECRET'),
-    });
+    try {
+      const payload = this.jwtService.verify(token, {
+        secret: this.configService.get<string>('JWT_SECRET'),
+      });
 
-    return payload;
+      return payload;
+    } catch (error: any) {
+      throw new UnauthorizedException();
+    }
   }
 
   extractToken(request: Request): string | undefined {
