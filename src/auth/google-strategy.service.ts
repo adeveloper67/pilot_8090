@@ -12,8 +12,7 @@ export class GoogleStrategyService extends PassportStrategy(
     super({
       clientID: configService.get<string>('GOOGLE_CLIENT_ID'),
       clientSecret: configService.get<string>('GOOGLE_CLIENT_SECRET'),
-      callbackURL:
-        'https://036b-37-252-93-133.ngrok-free.app/auth/google/callback',
+      callbackURL: 'https://8090.besttestserver.website/auth/google/callback',
       scope: ['email', 'profile'],
     });
   }

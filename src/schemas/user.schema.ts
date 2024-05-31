@@ -7,9 +7,8 @@ import { Role } from 'src/enums';
 export class User extends Document {
   @Prop({
     type: String,
-    required: true,
   })
-  name: string;
+  name?: string;
 
   @Prop({
     type: String,
