@@ -84,8 +84,8 @@ export class AuthService {
       };
 
       return user;
-    } catch (error: any) {
-      throw new HttpException(error.message, 500);
+    } catch {
+      throw new HttpException('Email address already used', 500);
     }
   }
 
